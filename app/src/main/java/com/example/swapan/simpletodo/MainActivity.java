@@ -10,13 +10,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.ctsuser1.simpletodo.R;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by swapan on 2/08/17.
@@ -45,19 +41,24 @@ public class MainActivity extends AppCompatActivity implements EditTodoDialogFra
     public void onAddItem(View v){
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        TodoItem todoItem = new TodoItem(itemText, "1");
+        TodoItem todoItem = new TodoItem();
+        todoItem.setTodoText(itemText);
+        todoItem.setTodoPriority("1");
         itemsAdapter.add(todoItem);
         etNewItem.setText("");
-        writeItems();
+        todoItem.save();
     }
 
 
     @Override
     public void onFinishEditDialog(String editedValue, int editPosition) {
-        TodoItem todoItem = new TodoItem(editedValue, "1");
+        TodoItem todoItem = items.get(editPosition);
+        todoItem.setTodoText(editedValue);
+        todoItem.setTodoPriority("1");
+
         items.set(editPosition, todoItem);
         itemsAdapter.notifyDataSetChanged();
-        writeItems();
+        todoItem.save();
 
     }
 
@@ -82,41 +83,18 @@ public class MainActivity extends AppCompatActivity implements EditTodoDialogFra
 
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id){
+                TodoItem todoItem = items.get(pos);
                 items.remove(pos);
                 itemsAdapter.notifyDataSetChanged();
-                writeItems();
+                todoItem.delete();
                 return true;
             }
         });
     }
 
     private void readItems(){
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try{
-            List<String> strItemsList =  FileUtils.readLines(todoFile);
-            int counter = 0;
-            items = new ArrayList<TodoItem>();
-            for(String item: strItemsList){
-                TodoItem todoItem = new TodoItem(item, "1");
-                items.add(counter, todoItem);
-                counter++;
-            }
-        }
-        catch (IOException e){
-            items = new ArrayList<>();
-        }
-        System.out.println(items);
+        items = (ArrayList<TodoItem>)SQLite.select().from(TodoItem.class).queryList();
     }
 
-    private void writeItems(){
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try{
-            FileUtils.writeLines(todoFile, items);
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
+
 }

@@ -11,6 +11,9 @@ import com.example.ctsuser1.simpletodo.R;
 
 import java.util.ArrayList;
 
+/**
+ * Created by swapan on 2/10/17.
+ */
 public class TodoListAdapter extends ArrayAdapter<TodoItem> {
     public TodoListAdapter(Context context, int resource, ArrayList<TodoItem> todoItems) {
         super(context, resource, todoItems);

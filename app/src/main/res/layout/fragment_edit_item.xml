@@ -22,7 +22,7 @@
         android:layout_alignStart="@+id/etEditItem" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="129dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:text=""
@@ -36,6 +36,7 @@
         android:layout_marginStart="14dp"
         android:imeOptions="actionDone"
         android:textStyle="normal|bold"
+        android:background="@drawable/edittextstyle"
         tools:textAlignment="textEnd" />
 
     <Button
@@ -43,8 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button"
-        android:onClick="onSaveItem"
-
+        android:background="@drawable/edittextstyle"
         android:layout_marginEnd="23dp"
         android:layout_alignBottom="@+id/etEditItem"
         android:layout_alignParentEnd="true" />
