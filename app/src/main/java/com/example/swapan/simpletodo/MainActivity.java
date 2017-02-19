@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.ctsuser1.simpletodo.R;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements EditTodoDialogFra
     public void onAddItem(View v){
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
+        if(itemText.trim().length() == 0){
+            Toast.makeText(this, "Please enter an item",Toast.LENGTH_SHORT).show();
+        }
         TodoItem todoItem = new TodoItem();
         todoItem.setTodoText(itemText);
         todoItem.setTodoPriority("1");
